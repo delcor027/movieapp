@@ -3,63 +3,103 @@ import { Link } from 'react-router-dom';
 import api from '../services/api';
 import '../styles/home.css';
 
-type Movie = {
+// Tipos
+interface Genre {
+  id: number;
+  name: string;
+}
+
+interface Movie {
   id: number;
   title: string;
   poster_path: string;
   vote_average: number;
   release_date: string;
-};
+  genre_ids: number[];
+}
 
-type FilterOption = 'popular' | 'top_rated' | 'now_playing' | 'release_date';
+type FilterOption = 'popular' | 'top_rated' | 'now_playing' | 'release_date' | 'trending';
 
 export default function Home() {
   const [movies, setMovies] = useState<Movie[]>([]);
+  const [genres, setGenres] = useState<Genre[]>([]);
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState<FilterOption>('now_playing');
+  const [selectedGenre, setSelectedGenre] = useState<number | null>(null);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Reseta tudo quando o filtro muda
+    const fetchGenres = async () => {
+      try {
+        const { data } = await api.get('/genre/movie/list');
+        setGenres(data.genres);
+      } catch (err) {
+        console.error('Erro ao buscar gêneros:', err);
+      }
+    };
+    fetchGenres();
+  }, []);
+
+  useEffect(() => {
     setMovies([]);
     setPage(1);
     setHasMore(true);
-  }, [filter]);
+  }, [filter, selectedGenre]);
 
-  useEffect(() => {
-    loadMovies();
-  }, [page, filter]);
+useEffect(() => {
+  loadMovies();
+}, [page, filter, selectedGenre]);
 
-  const loadMovies = async () => {
+
+    const loadMovies = async () => {
     if (loading || !hasMore) return;
 
     setLoading(true);
-    const endpoint = filter === 'release_date' ? 'now_playing' : filter;
+    let endpoint = `/movie/${filter === 'release_date' ? 'now_playing' : filter}`;
+    if (filter === 'trending') endpoint = '/trending/movie/day';
+
+    // Se houver gênero selecionado, usar o endpoint /discover/movie
+    if (selectedGenre !== null) {
+        endpoint = '/discover/movie';
+    }
 
     try {
-      const { data } = await api.get(`/movie/${endpoint}`, { params: { page } });
+        const { data } = await api.get(endpoint, {
+        params: {
+            page,
+            with_genres: selectedGenre ?? undefined,
+        },
+        });
 
-      const newMovies: Movie[] = filter === 'release_date'
-        ? data.results.sort((a: Movie, b: Movie) => new Date(b.release_date).getTime() - new Date(a.release_date).getTime())
-        : data.results;
+        const newMovies: Movie[] =
+        filter === 'release_date'
+            ? data.results.sort(
+                (a: Movie, b: Movie) =>
+                new Date(b.release_date).getTime() - new Date(a.release_date).getTime()
+            )
+            : data.results;
 
-      setMovies((prev) => [...prev, ...newMovies]);
+        setMovies((prev) => [...prev, ...newMovies]);
 
-      if (data.page >= data.total_pages || newMovies.length === 0) {
+        if (data.page >= data.total_pages || newMovies.length === 0) {
         setHasMore(false);
-      }
+        }
     } catch (error) {
-      console.error('Erro ao buscar filmes:', error);
+        console.error('Erro ao buscar filmes:', error);
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
-  };
+    };
 
-  const filteredMovies = movies.filter((movie) =>
+    const filteredMovies = movies.filter((movie) =>
     movie.title.toLowerCase().includes(search.toLowerCase())
-  );
+    );
+
+  const getGenreNames = (ids: number[]) => {
+    return ids.map(id => genres.find(g => g.id === id)?.name).filter(Boolean).join(', ');
+  };
 
   return (
     <div className="home-container">
@@ -73,6 +113,7 @@ export default function Home() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
+
         <select
           className="home-select"
           value={filter}
@@ -82,6 +123,20 @@ export default function Home() {
           <option value="popular">Mais Populares</option>
           <option value="top_rated">Melhores Avaliados</option>
           <option value="release_date">Mais Recentes</option>
+          <option value="trending">🔥 Tendência Hoje</option>
+        </select>
+
+        <select
+          className="home-select"
+          value={selectedGenre ?? ''}
+          onChange={(e) => setSelectedGenre(e.target.value ? Number(e.target.value) : null)}
+        >
+          <option value="">Todos os Gêneros</option>
+          {genres.map((genre) => (
+            <option key={genre.id} value={genre.id}>
+              {genre.name}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -97,6 +152,7 @@ export default function Home() {
               <p className="movie-title">{movie.title}</p>
               <p className="movie-rating">⭐ {movie.vote_average.toFixed(1)}</p>
               <p className="movie-date">{movie.release_date}</p>
+              <p className="movie-genres">🎭 {getGenreNames(movie.genre_ids)}</p>
             </div>
           </Link>
         ))}
