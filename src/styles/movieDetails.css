@@ -1,0 +1,56 @@
+.details-container {
+  @apply w-full max-w-7xl mx-auto px-6 py-8 bg-slate-900 text-slate-100 min-h-screen;
+}
+
+.flex-details {
+  @apply grid grid-cols-1 md:grid-cols-[300px_1fr] gap-8 mb-8 items-start;
+}
+
+.poster-details {
+  @apply w-full h-auto md:w-full rounded-lg shadow-lg object-cover;
+}
+
+.poster-details:hover {
+  transform: scale(1.03);
+}
+
+.details-content {
+  @apply flex-1;
+}
+
+.title-details {
+  @apply text-4xl font-extrabold mb-4 tracking-wide text-yellow-400;
+  text-shadow: 2px 2px 4px #000;
+}
+
+.overview {
+  @apply text-base text-slate-300 mb-6 leading-relaxed;
+}
+
+.detail-label {
+  @apply text-base font-medium text-slate-400 mb-2;
+}
+
+.detail-section {
+  @apply text-base text-slate-200 mb-5;
+}
+
+.details-content > div {
+  @apply mt-6;
+}
+
+.cast-list {
+  @apply list-disc list-inside text-base text-slate-200 leading-relaxed;
+}
+
+.trailer-container {
+  @apply w-full aspect-video rounded overflow-hidden shadow-xl md:col-span-2;
+}
+
+.genre-badge {
+  @apply inline-block bg-yellow-400 text-black text-xs font-semibold px-2 py-1 rounded-full mr-2 mb-2;
+}
+
+.genre-wrapper {
+  @apply mt-2 flex flex-wrap gap-2;
+}

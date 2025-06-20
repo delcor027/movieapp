@@ -1,0 +1,47 @@
+.home-container {
+  @apply max-w-7xl mx-auto p-4 bg-slate-900 min-h-screen text-slate-100;
+}
+
+.home-title {
+  @apply text-2xl font-bold mb-6 text-center tracking-wide;
+}
+
+.home-controls {
+  @apply flex flex-col sm:flex-row gap-3 justify-between items-center mb-8;
+}
+
+.home-input {
+  @apply w-full sm:w-2/3 px-4 py-2 bg-slate-700 border border-slate-600 rounded-md placeholder-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400;
+}
+
+.home-select {
+  @apply w-full sm:w-1/3 px-4 py-2 bg-slate-700 border border-slate-600 rounded-md text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-yellow-400;
+}
+
+.home-grid {
+  @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6;
+}
+
+.movie-card {
+  @apply bg-slate-800 rounded-lg overflow-hidden shadow-md transition-transform hover:scale-105;
+}
+
+.movie-poster {
+  @apply w-full h-auto object-cover rounded-t;
+}
+
+.movie-info {
+  @apply p-3 text-center;
+}
+
+.movie-title {
+  @apply font-semibold text-base text-slate-100;
+}
+
+.movie-rating {
+  @apply text-sm text-yellow-400 mt-1;
+}
+
+.movie-date {
+  @apply text-xs text-slate-400;
+}
