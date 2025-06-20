@@ -17,18 +17,45 @@ export default function Home() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState<FilterOption>('now_playing');
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const fetchMovies = async () => {
-      const endpoint = filter === 'release_date' ? 'now_playing' : filter;
-      const { data } = await api.get(`/movie/${endpoint}`);
-      const result = filter === 'release_date'
+    // Reseta tudo quando o filtro muda
+    setMovies([]);
+    setPage(1);
+    setHasMore(true);
+  }, [filter]);
+
+  useEffect(() => {
+    loadMovies();
+  }, [page, filter]);
+
+  const loadMovies = async () => {
+    if (loading || !hasMore) return;
+
+    setLoading(true);
+    const endpoint = filter === 'release_date' ? 'now_playing' : filter;
+
+    try {
+      const { data } = await api.get(`/movie/${endpoint}`, { params: { page } });
+
+      const newMovies: Movie[] = filter === 'release_date'
         ? data.results.sort((a: Movie, b: Movie) => new Date(b.release_date).getTime() - new Date(a.release_date).getTime())
         : data.results;
-      setMovies(result);
-    };
-    fetchMovies();
-  }, [filter]);
+
+      setMovies((prev) => [...prev, ...newMovies]);
+
+      if (data.page >= data.total_pages || newMovies.length === 0) {
+        setHasMore(false);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar filmes:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const filteredMovies = movies.filter((movie) =>
     movie.title.toLowerCase().includes(search.toLowerCase())
@@ -74,6 +101,21 @@ export default function Home() {
           </Link>
         ))}
       </div>
+
+      {hasMore && !loading && (
+        <div className="flex justify-center mt-8">
+          <button
+            onClick={() => setPage((prev) => prev + 1)}
+            className="bg-yellow-400 text-black font-semibold px-6 py-2 rounded hover:bg-yellow-500 transition"
+          >
+            Ver mais
+          </button>
+        </div>
+      )}
+
+      {loading && (
+        <div className="text-center text-slate-400 mt-4">Carregando mais filmes...</div>
+      )}
     </div>
   );
 }
