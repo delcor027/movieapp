@@ -33,6 +33,7 @@ O projeto foi desenvolvido como estudo de React moderno, Tailwind CSS e boas pr�
 
 ## 📁 Estrutura de pastas resumida
 
+```
 src/
 ├── App.tsx — Configuração de rotas principais (React Router)
 ├── main.tsx — Ponto de entrada da aplicação
@@ -49,7 +50,7 @@ pages/
 styles/
 ├── home.css — Estilização específica da página Home
 ├── movieDetails.css — Estilização específica da página de detalhes
-
+```
 
 ---
 
