@@ -1,54 +1,128 @@
-# React + TypeScript + Vite
+# 🎬 Movie Explorer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicação **SPA** criada em **React + Vite + TypeScript** que consome a API do **The Movie Database (TMDB)** para listar, pesquisar e filtrar filmes em cartaz, populares, melhor avaliados, lançamentos, trending e por gênero.  
+O projeto foi desenvolvido como estudo de React moderno, Tailwind CSS e boas práticas de arquitetura front-end.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Principais recursos
 
-## Expanding the ESLint configuration
+| Funcionalidade | Descrição |
+| -------------- | --------- |
+| Lista dinâmica | Carrega filmes por página com **infinite scroll / “Ver mais”** |
+| Filtro avançado | Por popularidade, avaliação, data de lançamento, trending ou gênero |
+| Busca instantânea | Pesquisa por título em **tempo real** |
+| Detalhes do filme | Página dedicada com sinopse, gêneros, elenco principal e trailer do YouTube |
+| UI responsiva   | Layout mobile-first com **TailwindCSS** e animações sutis |
+| Código comentado| Todo o código possui **comentários explicativos** para facilitar manutenção |
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## 🛠️ Tecnologias & dependências
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+| Categoria | Stacks |
+| --------- | ------ |
+| **Core** | React 18, Vite, TypeScript |
+| **Estilo** | TailwindCSS, PostCSS |
+| **HTTP** | Axios |
+| **Roteamento** | React Router DOM v6 |
+| **Tipagem** | Interfaces & types de domínio (`Movie`, `Genre`, `Cast`…) |
+| **Deploy** | GitHub Pages (ou qualquer provedor estático) |
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## 📁 Estrutura de pastas resumida
+
+src/
+├── App.tsx — Configuração de rotas principais (React Router)
+├── main.tsx — Ponto de entrada da aplicação
+├── index.css — Estilizações globais utilizando Tailwind CSS
+├── App.css — Estilos adicionais e auxiliares
+
+services/
+├── api.ts — Configuração do Axios com base na API do TMDb
+
+pages/
+├── Home.tsx — Página principal com filtros e exibição de filmes
+├── MovieDetails.tsx — Página de detalhes com sinopse, elenco e trailer
+
+styles/
+├── home.css — Estilização específica da página Home
+├── movieDetails.css — Estilização específica da página de detalhes
+
+
+---
+
+## 🧠 Funcionalidades
+
+- 📄 Listagem de filmes com filtros:
+  - Em cartaz
+  - Populares
+  - Melhor avaliados
+  - Mais recentes
+  - Tendência do dia
+- 🔍 Busca de filmes por título
+- 🎭 Filtro por gênero
+- 📽️ Página de detalhes:
+  - Informações gerais do filme
+  - Elenco principal
+  - Trailer (YouTube)
+
+---
+
+## ⚙️ Tecnologias Utilizadas
+
+- **React** com **Vite**
+- **TypeScript**
+- **React Router DOM**
+- **Tailwind CSS** + **@apply** em arquivos `.css`
+- **TMDb API** para dados de filmes
+- **Axios** para requisições HTTP
+- **Poppins** como fonte principal
+
+---
+
+## 📦 Instalação Local
+
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/seunome/movie-explorer.git
+   cd movie-explorer
+   ```
+
+## ⚙️ Como Rodar o Projeto Localmente
+
+1. **Instale as dependências:**
+
+   ```bash
+   npm install
+   ```
+
+2. **Crie o arquivo `.env` com sua chave da TMDb:**
+
+   ```ini
+   VITE_TMDB_API_KEY=sua_chave_aqui
+   ```
+  
+3. **Rode o projeto:**
+
+   ```bash
+   npm run dev
+   ```
+
+## 🧪 Observações Técnicas
+
+- Os endpoints utilizados da TMDb incluem:
+  - `/movie/now_playing`, `/movie/popular`, `/movie/top_rated`, `/trending/movie/day`
+  - `/discover/movie` (para filtragem por gênero)
+  - `/movie/:id`, `/movie/:id/credits`, `/movie/:id/videos`
+
+- A estrutura do projeto segue boas práticas de componentização e separação de responsabilidades (API, páginas, estilos).
+
+- Tailwind foi utilizado com a diretiva `@apply` para centralizar a estilização em arquivos separados e facilitar a manutenção.
+
+---
+
+## 👨‍💻 Autor
+
+Desenvolvido por **Matheus Delcor**
