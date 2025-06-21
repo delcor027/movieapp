@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import '../styles/movieDetails.css';
 
@@ -30,6 +31,7 @@ export default function MovieDetails() {
   const [movie, setMovie] = useState<MovieDetails | null>(null);
   const [cast, setCast] = useState<Cast[]>([]);
   const [trailer, setTrailer] = useState<Trailer | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     api.get(`/movie/${id}`).then((res) => setMovie(res.data));
@@ -45,7 +47,13 @@ export default function MovieDetails() {
   if (!movie) return <div className="details-container">Carregando...</div>;
 
   return (
+
     <div className="details-container">
+    <button
+    onClick={() => navigate('/')}
+    className="bg-yellow-400 text-black font-semibold px-5 py-2 rounded hover:bg-yellow-500 transition mb-4"
+    >Voltar
+    </button>
       <div className="flex-details">
         <img
           src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}

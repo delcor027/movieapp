@@ -3,7 +3,15 @@
 }
 
 .home-title {
-  @apply text-2xl font-bold mb-6 text-center tracking-wide;
+  @apply text-4xl sm:text-5xl font-extrabold mb-8 text-center tracking-wide leading-tight;
+}
+
+.highlight-title {
+  @apply text-yellow-400;
+}
+
+.subtitle {
+  @apply block text-base sm:text-xl text-slate-300 font-medium mt-2;
 }
 
 .home-controls {

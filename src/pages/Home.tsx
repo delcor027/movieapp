@@ -103,7 +103,10 @@ useEffect(() => {
 
   return (
     <div className="home-container">
-      <h1 className="home-title">🎬 Filmes em Cartaz</h1>
+        <h1 className="home-title">
+        <span className="highlight-title">Movie Explorer</span>{' '}
+        <span className="subtitle">Descubra e explore os melhores filmes</span>
+        </h1>
 
       <div className="home-controls">
         <input
